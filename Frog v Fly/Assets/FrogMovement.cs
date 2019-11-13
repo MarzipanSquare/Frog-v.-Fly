@@ -80,9 +80,9 @@ public class FrogMovement : MonoBehaviour
             {
                 Direction flyDir = GetFlyDirection();
                 
-                // Move(flyDir);
+                Move(flyDir);
                 // Move((Direction) Random.Range(0, 3));
-                Move(ReverseDirection(flyDir));
+                // Move(ReverseDirection(flyDir));
 
             }
 
