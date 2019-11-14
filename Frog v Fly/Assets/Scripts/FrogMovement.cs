@@ -17,8 +17,16 @@ enum Direction {
 
 public class FrogMovement : MonoBehaviour
 {
+    [Header("Frog Variables")]
+    [Tooltip("Flag telling the frog to move randomly or chase the fly")]
     public bool moveRandomly = false;
-    public float timeBetweenHops = 1.5f; // time between each frog move
+    [Tooltip("Time between each frog hop")]
+    public float timeBetweenHops = 1.5f;
+    [Tooltip("Flag to show the frog's raycast")]
+    public bool showRaycast = false;
+    
+    [ReadOnly]
+    [Header("Simulation Manager")]
     public SimulationManager simulationManager;
 
     private Vector3 _previousPad; // the position of the previous lily pad the frog is on
@@ -29,11 +37,11 @@ public class FrogMovement : MonoBehaviour
     private Collider2D _tongueCollider; // the tongue collider on the frog
 
     private Direction _lastMovement; // the last direction the frog moved in
-    private bool _timerEnded; // keeps track of if timer between movements has completed
 
     private float _timer = 0; // timer current value
+    private bool _timerEnded; // keeps track of if timer between movements has completed
 
-    private float _distanceFromFly = 0;
+    private float _distanceFromFly = 0; // frog's current distance from fly
 
     // Start is called before the first frame update
     void Start()
@@ -47,71 +55,28 @@ public class FrogMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (!simulationManager.isSim)
+        
+        if (simulationManager.flyActive)
         {
-            #region GameCode
-        
-            // every frame check for a key down and move the frog in that direction
-            if (Input.GetKeyDown(KeyCode.UpArrow) || 
-                Input.GetKeyDown(KeyCode.W))
-            {
-                Move(Direction.Up);
-            
-            }
-        
-            if (Input.GetKeyDown(KeyCode.DownArrow) || 
-                Input.GetKeyDown(KeyCode.S))
-            {
-                Move(Direction.Down);
-            
-            }
-        
-            if (Input.GetKeyDown(KeyCode.LeftArrow) || 
-                Input.GetKeyDown(KeyCode.A))
-            {
-                Move(Direction.Left);
-            
-            }
-        
-            if (Input.GetKeyDown(KeyCode.RightArrow) || 
-                Input.GetKeyDown(KeyCode.D))
-            {
-                Move(Direction.Right);
-            }
-
-            #endregion
+            _distanceFromFly = Vector3.Distance(transform.position, simulationManager.fly.transform.position);
+            simulationManager.UpdateDistance(_distanceFromFly);
         }
-        else
-        {
-            #region SimulationCode
-
-            if (simulationManager.flyActive)
-            {
-                _distanceFromFly = Vector3.Distance(transform.position, simulationManager.fly.transform.position);
-                simulationManager.UpdateDistance(_distanceFromFly);
-            }
             
-            bool wait = Wait();
-            if (simulationManager.flyActive && wait)
-            {
+        bool wait = Wait();
+        if (simulationManager.flyActive && wait)
+        {
 
-                    Direction flyDir = GetFlyDirection();
+            Direction flyDir = GetFlyDirection();
 
-                    Move(moveRandomly ? RandomDirection() : flyDir);
-            }
+            Move(moveRandomly ? RandomDirection() : flyDir);
+        }
 
-            #endregion
+        if (showRaycast)
+        {
+            Vector2 forward = transform.TransformDirection(Vector2.up) * 3;
+            Debug.DrawRay(transform.position, forward, Color.white);
         }
         
-        #region RaycastForHopping
-
-        Vector2 forward = transform.TransformDirection(Vector2.up) * 3;
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, forward);
-        // Debug.DrawRay(transform.position, forward, Color.white); //uncomment this to see the raycast in the scenes
-
-        #endregion
-
     }
 
     void Move(Direction dir)
@@ -152,7 +117,7 @@ public class FrogMovement : MonoBehaviour
 
             if (_previousPad != _currentPad)
             {
-                simulationManager.frogMoves += 1;
+                simulationManager.frogMovesValue += 1;
             }
         }
         
@@ -198,26 +163,6 @@ public class FrogMovement : MonoBehaviour
         return Direction.Down;
     }
 
-    Direction ReverseDirection(Direction dir)
-    {
-        switch (dir)
-        {
-            case Direction.Up:
-                return Direction.Down;
-            
-            case Direction.Down:
-                return Direction.Up;
-            
-            case Direction.Right:
-                return Direction.Left;
-            
-            case Direction.Left:
-                return Direction.Right;
-            default:
-                return Direction.Down;
-        }
-    }
-    
     private bool Wait()
     {
         _timer += Time.deltaTime;

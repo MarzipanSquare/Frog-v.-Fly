@@ -5,17 +5,9 @@ using UnityEngine;
 
 public class Lilypad : MonoBehaviour
 {
-    [SerializeField]
-    private int padID;
-
-    [SerializeField]
-    private SimulationManager manager;
-
-    IEnumerator waitThreeSeconds()
-    {
-        yield return new WaitForSeconds(manager.lilypadWaitTime);
-    }
-
+    // when an object enters the lilypad's collider
+    // check if it's the frog and if so
+    // change the layer to default
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.CompareTag("Frog"))
@@ -24,14 +16,14 @@ public class Lilypad : MonoBehaviour
         }
     }
 
+    // when an object enters the lilypad's collider
+    // check if it's the frog and if so
+    // change the layer to default
     void OnTriggerExit2D(Collider2D col)
     {
         if (col.gameObject.CompareTag("Frog"))
         {
             gameObject.layer = LayerMask.NameToLayer("Default");
-//            this.gameObject.SetActive(false);
-////            StartCoroutine(waitThreeSeconds());
-//            this.gameObject.SetActive(true);
         }
     }
 }

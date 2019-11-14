@@ -10,26 +10,35 @@ using Random = UnityEngine.Random;
 
 public class SimulationManager : MonoBehaviour
 {
-    // time sim has been running
-    private float time = 0;
-    public float frogMoves;
-    private float _numOfFliesCaught = 0;
-    private float _frogEfficiencyValue;
 
-    // how long lilypads stay underwater
-    public int lilypadWaitTime = 2;
-    
-    // is there a fly active on the scene?
+    [Header("Number of times the frog has moved. ")]
+    [ReadOnly]
+    public float frogMovesValue;
+
+    [Header("Is there a fly active on the scene?")]
+    [ReadOnly]
     public bool flyActive = true;
-    public GameObject flyPrefab; 
     
-    // flag to switch to sim or game
-    public bool isSim = false;
-
-    // the current fly in the scene
+    [Header("The fly prefab")]
+    [ReadOnly]
+    public GameObject flyPrefab;
+    
+    [Header("The current fly in the scene")]
+    [ReadOnly]
     public GameObject fly;
 
+    // time sim has been running
+    private float _time = 0;        
+    // number of flies the frog has caught
+    private float _numOfFliesCaught = 0;
+    // how efficient the frog is
+    private float _frogEfficiencyValue;
+    
+    // objects on the user interface
     #region UserInterfaceObjects
+        
+        [Header("User Interface")]
+        [ReadOnly]
         public GameObject simInterface;
 
         private Button _restartButton;
@@ -49,13 +58,14 @@ public class SimulationManager : MonoBehaviour
         fly = (GameObject) Instantiate(flyPrefab, position, Quaternion.identity);
         
 
+        // get all the user interface objects during run time
         #region GetUserInterfaceObjects
         
         GameObject infoPanel = simInterface.transform.GetChild(0).gameObject;
 
         _restartButton = simInterface.transform.GetChild(1).gameObject.GetComponent<Button>();
 
-        _restartButton.onClick.AddListener(RestartGame);
+        _restartButton.onClick.AddListener(RestartSim);
 
         _timer = infoPanel.transform.GetChild(0).gameObject.GetComponent<Text>();
         _frogMoves = infoPanel.transform.GetChild(1).gameObject.GetComponent<Text>();
@@ -65,6 +75,7 @@ public class SimulationManager : MonoBehaviour
 
         #endregion
         
+        // initialize all the text UI objects
         _timer.text = "Time: 0 s";
         _frogMoves.text = "Moves: 0";
         _flyDistance.text = "Fly Distance: 0";
@@ -79,8 +90,10 @@ public class SimulationManager : MonoBehaviour
         // if there's no fly on the scene, make a new one
         if (flyActive == false)
         {
+            // update the number of flies caught
             _numOfFliesCaught += 1;
             _fliesCaught.text = "Flies Caught: " + _numOfFliesCaught;
+            
             // get a random position on screen and create a fly there
             Vector3 position = new Vector3(Random.Range(-9, 9), Random.Range(-5, 5), 0);
             fly = (GameObject) Instantiate(flyPrefab, position, Quaternion.identity);
@@ -88,27 +101,32 @@ public class SimulationManager : MonoBehaviour
         }
         else
         {
-            _frogEfficiencyValue = _numOfFliesCaught / frogMoves;
-            _frogEfficiency.text = "Efficiency: " + _frogEfficiencyValue;
+            // update the frog's efficiency
+            _frogEfficiencyValue = _numOfFliesCaught / frogMovesValue;
+            _frogEfficiency.text = "Efficiency: " + _frogEfficiencyValue + " flies\\move";
         }
 
+        // update the timer and frog's number of moves
         UpdateTimerUI();
-        _frogMoves.text = "Moves: " + frogMoves;
+        _frogMoves.text = "Moves: " + frogMovesValue;
 
     }
     
+    // update the timer
     void UpdateTimerUI(){
         //set timer UI
-        time += Time.deltaTime;
-        _timer.text = "Time: " + time + "s";
+        _time += Time.deltaTime;
+        _timer.text = "Time: " + _time + "s";
     }
 
+    // update the distance between the fly and the frog
     public void UpdateDistance(float distance)
     {
         _flyDistance.text = "Fly Distance: " + distance;
     }
 
-    private void RestartGame()
+    // restart the simulation
+    private void RestartSim()
     {
         SceneManager.LoadScene(1);
     }
