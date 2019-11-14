@@ -29,9 +29,9 @@ public class Lilypad : MonoBehaviour
         if (col.gameObject.CompareTag("Frog"))
         {
             gameObject.layer = LayerMask.NameToLayer("Default");
-            this.gameObject.SetActive(false);
-//            StartCoroutine(waitThreeSeconds());
-            this.gameObject.SetActive(true);
+//            this.gameObject.SetActive(false);
+////            StartCoroutine(waitThreeSeconds());
+//            this.gameObject.SetActive(true);
         }
     }
 }

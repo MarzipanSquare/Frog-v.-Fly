@@ -15,7 +15,7 @@ public class SimulationManager : MonoBehaviour
     public float frogMoves;
     private float _numOfFliesCaught = 0;
     private float _frogEfficiencyValue;
-    
+
     // how long lilypads stay underwater
     public int lilypadWaitTime = 2;
     
@@ -35,7 +35,7 @@ public class SimulationManager : MonoBehaviour
         private Button _restartButton;
         private Text _timer;
         private Text _frogMoves;
-        public Text _flyDistance;
+        private Text _flyDistance;
         private Text _fliesCaught;
         private Text _frogEfficiency;
 

@@ -17,9 +17,11 @@ enum Direction {
 
 public class FrogMovement : MonoBehaviour
 {
+    public bool moveRandomly = false;
     public float timeBetweenHops = 1.5f; // time between each frog move
     public SimulationManager simulationManager;
-    
+
+    private Vector3 _previousPad; // the position of the previous lily pad the frog is on
     private Vector3 _currentPad; // the position of the lily pad the frog is currently on
 
     private Animator _anim; // the frogs animator
@@ -32,7 +34,7 @@ public class FrogMovement : MonoBehaviour
     private float _timer = 0; // timer current value
 
     private float _distanceFromFly = 0;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -95,11 +97,8 @@ public class FrogMovement : MonoBehaviour
             {
 
                     Direction flyDir = GetFlyDirection();
-                
-                    // Move(flyDir);
-                    // Move(RandomDirection());
 
-                    simulationManager.frogMoves += 1;
+                    Move(moveRandomly ? RandomDirection() : flyDir);
             }
 
             #endregion
@@ -148,8 +147,13 @@ public class FrogMovement : MonoBehaviour
             _anim.Play("frog_hop", 0, 0);
             
             transform.position = hit.collider.gameObject.transform.position;
+            _previousPad = _currentPad;
             _currentPad = transform.position;
-         
+
+            if (_previousPad != _currentPad)
+            {
+                simulationManager.frogMoves += 1;
+            }
         }
         
     }

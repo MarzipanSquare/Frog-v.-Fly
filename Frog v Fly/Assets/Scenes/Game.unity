@@ -269,7 +269,7 @@ PrefabInstance:
         type: 3}
       propertyPath: manager
       value: 
-      objectReference: {fileID: 920443529}
+      objectReference: {fileID: 0}
     - target: {fileID: 8138687384260477662, guid: 12afacec0f4229c41ada76a51c6aa9d6,
         type: 3}
       propertyPath: m_IsTrigger
@@ -552,7 +552,7 @@ PrefabInstance:
         type: 3}
       propertyPath: manager
       value: 
-      objectReference: {fileID: 920443529}
+      objectReference: {fileID: 0}
     - target: {fileID: 8138687384260477662, guid: 12afacec0f4229c41ada76a51c6aa9d6,
         type: 3}
       propertyPath: m_IsTrigger
@@ -699,7 +699,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &513522825
 GameObject:
@@ -885,7 +885,7 @@ PrefabInstance:
         type: 3}
       propertyPath: manager
       value: 
-      objectReference: {fileID: 920443529}
+      objectReference: {fileID: 0}
     - target: {fileID: 8138687384260477662, guid: 12afacec0f4229c41ada76a51c6aa9d6,
         type: 3}
       propertyPath: m_IsTrigger
@@ -1013,7 +1013,7 @@ PrefabInstance:
         type: 3}
       propertyPath: manager
       value: 
-      objectReference: {fileID: 920443529}
+      objectReference: {fileID: 0}
     - target: {fileID: 8138687384260477662, guid: 12afacec0f4229c41ada76a51c6aa9d6,
         type: 3}
       propertyPath: m_IsTrigger
@@ -1282,7 +1282,7 @@ Transform:
   m_Children:
   - {fileID: 1062399864}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -180}
 --- !u!114 &688578656
 MonoBehaviour:
@@ -1296,8 +1296,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61c7b4e9eaf17fb46ad2fa96865f0ba6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  simulationManager: {fileID: 920443529}
-  currentPad: {x: 0, y: 0, z: 0}
+  moveRandomly: 0
+  timeBetweenHops: 1.5
+  simulationManager: {fileID: 2069492826}
 --- !u!50 &688578657
 Rigidbody2D:
   serializedVersion: 4
@@ -1404,7 +1405,7 @@ Transform:
   - {fileID: 1805178693}
   - {fileID: 411861062}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &862969396
 PrefabInstance:
@@ -1498,7 +1499,7 @@ PrefabInstance:
         type: 3}
       propertyPath: manager
       value: 
-      objectReference: {fileID: 920443529}
+      objectReference: {fileID: 0}
     - target: {fileID: 8138687384260477662, guid: 12afacec0f4229c41ada76a51c6aa9d6,
         type: 3}
       propertyPath: m_IsTrigger
@@ -1626,7 +1627,7 @@ PrefabInstance:
         type: 3}
       propertyPath: manager
       value: 
-      objectReference: {fileID: 920443529}
+      objectReference: {fileID: 0}
     - target: {fileID: 8138687384260477662, guid: 12afacec0f4229c41ada76a51c6aa9d6,
         type: 3}
       propertyPath: m_IsTrigger
@@ -1663,7 +1664,6 @@ GameObject:
   - component: {fileID: 920443528}
   - component: {fileID: 920443527}
   - component: {fileID: 920443526}
-  - component: {fileID: 920443529}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1734,29 +1734,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &920443529
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 920443525}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be77c1cdb64d2fd489e399faf70688ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  frogMoves: 0
-  lilypadWaitTime: 0
-  flyActive: 1
-  flyPrefab: {fileID: 4089312944790036105, guid: 5095f2b383e6e3a479975e27c99a868e,
-    type: 3}
-  isSim: 1
-  fly: {fileID: 0}
-  simInterface: {fileID: 705174917}
-  _flyDistance: {fileID: 0}
 --- !u!1 &927425523
 GameObject:
   m_ObjectHideFlags: 0
@@ -2324,7 +2303,7 @@ PrefabInstance:
         type: 3}
       propertyPath: manager
       value: 
-      objectReference: {fileID: 920443529}
+      objectReference: {fileID: 0}
     - target: {fileID: 8138687384260477662, guid: 12afacec0f4229c41ada76a51c6aa9d6,
         type: 3}
       propertyPath: m_IsTrigger
@@ -2680,7 +2659,7 @@ RectTransform:
   - {fileID: 1254186183}
   - {fileID: 1230614040}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2729,7 +2708,7 @@ Transform:
   - {fileID: 588749559}
   - {fileID: 1252268682}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1529632608
 PrefabInstance:
@@ -2833,7 +2812,7 @@ PrefabInstance:
         type: 3}
       propertyPath: manager
       value: 
-      objectReference: {fileID: 920443529}
+      objectReference: {fileID: 0}
     - target: {fileID: 8138687384260477662, guid: 12afacec0f4229c41ada76a51c6aa9d6,
         type: 3}
       propertyPath: m_IsTrigger
@@ -3172,7 +3151,7 @@ PrefabInstance:
         type: 3}
       propertyPath: manager
       value: 
-      objectReference: {fileID: 920443529}
+      objectReference: {fileID: 0}
     - target: {fileID: 8138687384260477662, guid: 12afacec0f4229c41ada76a51c6aa9d6,
         type: 3}
       propertyPath: m_IsTrigger
@@ -3418,7 +3397,7 @@ PrefabInstance:
         type: 3}
       propertyPath: manager
       value: 
-      objectReference: {fileID: 920443529}
+      objectReference: {fileID: 0}
     - target: {fileID: 8138687384260477662, guid: 12afacec0f4229c41ada76a51c6aa9d6,
         type: 3}
       propertyPath: m_IsTrigger
@@ -3594,7 +3573,7 @@ RectTransform:
   - {fileID: 669261168}
   - {fileID: 705174918}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3703,7 +3682,7 @@ PrefabInstance:
         type: 3}
       propertyPath: manager
       value: 
-      objectReference: {fileID: 920443529}
+      objectReference: {fileID: 0}
     - target: {fileID: 8138687384260477662, guid: 12afacec0f4229c41ada76a51c6aa9d6,
         type: 3}
       propertyPath: m_IsTrigger
@@ -3831,7 +3810,7 @@ PrefabInstance:
         type: 3}
       propertyPath: manager
       value: 
-      objectReference: {fileID: 920443529}
+      objectReference: {fileID: 0}
     - target: {fileID: 8138687384260477662, guid: 12afacec0f4229c41ada76a51c6aa9d6,
         type: 3}
       propertyPath: m_IsTrigger
@@ -3949,7 +3928,7 @@ PrefabInstance:
         type: 3}
       propertyPath: manager
       value: 
-      objectReference: {fileID: 920443529}
+      objectReference: {fileID: 0}
     - target: {fileID: 8138687384260477662, guid: 12afacec0f4229c41ada76a51c6aa9d6,
         type: 3}
       propertyPath: m_IsTrigger
@@ -4052,6 +4031,57 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2040516887}
   m_CullTransparentMesh: 0
+--- !u!1 &2069492825
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2069492827}
+  - component: {fileID: 2069492826}
+  m_Layer: 0
+  m_Name: SimManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2069492826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2069492825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be77c1cdb64d2fd489e399faf70688ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frogMoves: 0
+  lilypadWaitTime: 0
+  flyActive: 1
+  flyPrefab: {fileID: 4089312944790036105, guid: 5095f2b383e6e3a479975e27c99a868e,
+    type: 3}
+  isSim: 1
+  fly: {fileID: 0}
+  simInterface: {fileID: 705174917}
+--- !u!4 &2069492827
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2069492825}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -4, y: 2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &8138687385251206615
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4123,7 +4153,7 @@ PrefabInstance:
         type: 3}
       propertyPath: manager
       value: 
-      objectReference: {fileID: 920443529}
+      objectReference: {fileID: 0}
     - target: {fileID: 8138687384260477663, guid: 12afacec0f4229c41ada76a51c6aa9d6,
         type: 3}
       propertyPath: validMoves.Array.data[0]
