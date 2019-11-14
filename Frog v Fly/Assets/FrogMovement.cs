@@ -17,29 +17,29 @@ enum Direction {
 
 public class FrogMovement : MonoBehaviour
 {
+    public float timeBetweenHops = 1.5f; // time between each frog move
     public SimulationManager simulationManager;
+    
+    private Vector3 _currentPad; // the position of the lily pad the frog is currently on
 
-    [SerializeField]
-    private Vector3 currentPad; // the position of the lily pad the frog is currently on
+    private Animator _anim; // the frogs animator
+    private Rigidbody2D _rb; // the frogs rigidbody (for physics and collisions)
+    private Collider2D _tongueCollider; // the tongue collider on the frog
 
-    private Animator anim; // the frogs animator
-    private Rigidbody2D rb; // the frogs rigidbody (for physics and collisions)
-    private Collider2D tongueCollider;
+    private Direction _lastMovement; // the last direction the frog moved in
+    private bool _timerEnded; // keeps track of if timer between movements has completed
 
-    private Direction _lastMovement;
-    private bool _timerEnded;
+    private float _timer = 0; // timer current value
 
-    private float _timer = 0;
-    private float _timerMax = 0;
-
+    private float _distanceFromFly = 0;
     
     // Start is called before the first frame update
     void Start()
     {
         // get the frog's animator and rigidbody
-        anim = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody2D>();
-        tongueCollider = GetComponentInChildren<Collider2D>();
+        _anim = GetComponent<Animator>();
+        _rb = GetComponent<Rigidbody2D>();
+        _tongueCollider = GetComponentInChildren<Collider2D>();
     }
 
     // Update is called once per frame
@@ -84,17 +84,22 @@ public class FrogMovement : MonoBehaviour
         {
             #region SimulationCode
 
-            bool wait = Waited(1.5f);
-            Debug.Log(wait);
+            if (simulationManager.flyActive)
+            {
+                _distanceFromFly = Vector3.Distance(transform.position, simulationManager.fly.transform.position);
+                simulationManager.UpdateDistance(_distanceFromFly);
+            }
+            
+            bool wait = Wait();
             if (simulationManager.flyActive && wait)
             {
 
                     Direction flyDir = GetFlyDirection();
                 
-                    Move(flyDir);
+                    // Move(flyDir);
                     // Move(RandomDirection());
-                    // Move(ReverseDirection(flyDir));
 
+                    simulationManager.frogMoves += 1;
             }
 
             #endregion
@@ -139,13 +144,12 @@ public class FrogMovement : MonoBehaviour
         // if the raycast hits a lilypad collider, move the frog to that lilypad
         if (hit.collider.gameObject.CompareTag("LilyPad"))
         {
-            transform.position = hit.collider.gameObject.transform.position;
-            currentPad = transform.position;
-            
             // play the frog's hop animation
-            anim.Play("frog_hop");
-//            yield return new WaitForSeconds(2);
+            _anim.Play("frog_hop", 0, 0);
             
+            transform.position = hit.collider.gameObject.transform.position;
+            _currentPad = transform.position;
+         
         }
         
     }
@@ -196,24 +200,25 @@ public class FrogMovement : MonoBehaviour
         {
             case Direction.Up:
                 return Direction.Down;
+            
             case Direction.Down:
                 return Direction.Up;
+            
             case Direction.Right:
                 return Direction.Left;
+            
             case Direction.Left:
                 return Direction.Right;
             default:
-                return (Direction) Random.Range(0, 3);
+                return Direction.Down;
         }
     }
     
-    private bool Waited(float seconds)
+    private bool Wait()
     {
-        _timerMax = seconds;
- 
         _timer += Time.deltaTime;
  
-        if (_timer >= _timerMax)
+        if (_timer >= timeBetweenHops)
         {
             _timer = 0;
             return true; //max reached - waited x - seconds
@@ -230,9 +235,6 @@ public class FrogMovement : MonoBehaviour
             // destroy the fly object
             Destroy(col.gameObject);
             simulationManager.flyActive = false;
-            
-            // increment the frog's score
-            
         }
     }
 }
