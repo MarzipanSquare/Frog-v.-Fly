@@ -9,7 +9,7 @@ public class Lilypad : MonoBehaviour
     private int padID;
 
     [SerializeField]
-    private GameManager manager;
+    private SimulationManager manager;
 
     IEnumerator waitThreeSeconds()
     {
@@ -20,7 +20,6 @@ public class Lilypad : MonoBehaviour
     {
         if (col.gameObject.CompareTag("Frog"))
         {
-            Debug.Log("Frog has entered trigger of " + gameObject.name);
             gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
         }
     }
@@ -31,7 +30,7 @@ public class Lilypad : MonoBehaviour
         {
             gameObject.layer = LayerMask.NameToLayer("Default");
             this.gameObject.SetActive(false);
-            waitThreeSeconds();
+//            StartCoroutine(waitThreeSeconds());
             this.gameObject.SetActive(true);
         }
     }

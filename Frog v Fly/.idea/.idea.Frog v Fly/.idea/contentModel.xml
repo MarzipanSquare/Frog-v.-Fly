@@ -8,9 +8,9 @@
       <e p="Assets" t="Include">
         <e p="FlyMovement.cs" t="Include" />
         <e p="FrogMovement.cs" t="Include" />
-        <e p="GameManager.cs" t="Include" />
         <e p="Lilypad.cs" t="Include" />
         <e p="MainMenu.cs" t="Include" />
+        <e p="SimulationManager.cs" t="Include" />
       </e>
       <e p="Frog v Fly.sln" t="IncludeFlat" />
       <e p="obj" t="ExcludeRecursive" />

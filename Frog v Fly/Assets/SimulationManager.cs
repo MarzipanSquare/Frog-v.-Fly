@@ -6,7 +6,7 @@ using UnityEngine.Serialization;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
-public class GameManager : MonoBehaviour
+public class SimulationManager : MonoBehaviour
 {
 
     // how long lilypads stay underwater

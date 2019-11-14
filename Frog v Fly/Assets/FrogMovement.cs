@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Quaternion = UnityEngine.Quaternion;
 using Random = UnityEngine.Random;
 using Vector2 = UnityEngine.Vector2;
@@ -16,29 +17,36 @@ enum Direction {
 
 public class FrogMovement : MonoBehaviour
 {
-    public GameManager gameManager;
+    public SimulationManager simulationManager;
 
     [SerializeField]
     private Vector3 currentPad; // the position of the lily pad the frog is currently on
 
     private Animator anim; // the frogs animator
     private Rigidbody2D rb; // the frogs rigidbody (for physics and collisions)
-    private Collider2D[] tongueCollider;
+    private Collider2D tongueCollider;
 
+    private Direction _lastMovement;
+    private bool _timerEnded;
+
+    private float _timer = 0;
+    private float _timerMax = 0;
+
+    
     // Start is called before the first frame update
     void Start()
     {
         // get the frog's animator and rigidbody
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        tongueCollider = GetComponentsInChildren<Collider2D>();
+        tongueCollider = GetComponentInChildren<Collider2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        if (!gameManager.isSim)
+        if (!simulationManager.isSim)
         {
             #region GameCode
         
@@ -76,19 +84,21 @@ public class FrogMovement : MonoBehaviour
         {
             #region SimulationCode
 
-            if (gameManager.flyActive)
+            bool wait = Waited(1.5f);
+            Debug.Log(wait);
+            if (simulationManager.flyActive && wait)
             {
-                Direction flyDir = GetFlyDirection();
+
+                    Direction flyDir = GetFlyDirection();
                 
-                Move(flyDir);
-                // Move((Direction) Random.Range(0, 3));
-                // Move(ReverseDirection(flyDir));
+                    Move(flyDir);
+                    // Move(RandomDirection());
+                    // Move(ReverseDirection(flyDir));
 
             }
 
             #endregion
         }
-    
         
         #region RaycastForHopping
 
@@ -125,22 +135,38 @@ public class FrogMovement : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(transform.position, forward);
 //        Debug.DrawRay(transform.position, forward, Color.white); //uncomment this to see the raycast in the scene
 
+        
         // if the raycast hits a lilypad collider, move the frog to that lilypad
         if (hit.collider.gameObject.CompareTag("LilyPad"))
         {
-            Debug.Log(hit.collider.tag);
             transform.position = hit.collider.gameObject.transform.position;
             currentPad = transform.position;
+            
+            // play the frog's hop animation
+            anim.Play("frog_hop");
+//            yield return new WaitForSeconds(2);
+            
         }
         
-        // play the frog's hop animation
-        anim.Play("frog_hop");
     }
 
+    Direction RandomDirection()
+    {
+        Direction dir = (Direction) Random.Range(0, 4);
+
+        if (dir == _lastMovement)
+        {
+            return RandomDirection();
+        }
+
+        _lastMovement = dir;
+        return dir; 
+
+    }
+    
     Direction GetFlyDirection()
     {
-        Vector3 directionVector = transform.position - gameManager.fly.transform.position;
-        Debug.Log(directionVector);
+        Vector3 directionVector = transform.position - simulationManager.fly.transform.position;
 
         // get absolute values of x and y to find see if the fly is farther horizontally or vertically
         float xDir = Mathf.Abs(directionVector.x);
@@ -181,6 +207,21 @@ public class FrogMovement : MonoBehaviour
         }
     }
     
+    private bool Waited(float seconds)
+    {
+        _timerMax = seconds;
+ 
+        _timer += Time.deltaTime;
+ 
+        if (_timer >= _timerMax)
+        {
+            _timer = 0;
+            return true; //max reached - waited x - seconds
+        }
+ 
+        return false;
+    }
+
     // if the fly enters the frog's collider, catch the fly
     private void OnTriggerEnter2D(Collider2D col)
     {
@@ -188,7 +229,7 @@ public class FrogMovement : MonoBehaviour
         {
             // destroy the fly object
             Destroy(col.gameObject);
-            gameManager.flyActive = false;
+            simulationManager.flyActive = false;
             
             // increment the frog's score
             
