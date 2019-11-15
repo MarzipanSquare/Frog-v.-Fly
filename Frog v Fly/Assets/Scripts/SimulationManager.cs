@@ -20,7 +20,6 @@ public class SimulationManager : MonoBehaviour
     public bool flyActive = true;
     
     [Header("The fly prefab")]
-    [ReadOnly]
     public GameObject flyPrefab;
     
     [Header("The current fly in the scene")]
