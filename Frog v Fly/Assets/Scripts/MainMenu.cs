@@ -7,22 +7,12 @@ using UnityEngine.UI;
 public class MainMenu : MonoBehaviour
 {
 
-    public Button playButton;
-    public Button exitButton;
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        playButton.onClick.AddListener(LoadGame);
-        exitButton.onClick.AddListener(ExitGame);
-    }
-
-    private void LoadGame()
+    public void LoadSim()
     {
         SceneManager.LoadScene(1);
     }
     
-    private void ExitGame()
+    public void ExitSim()
     {
         Application.Quit();
     }
