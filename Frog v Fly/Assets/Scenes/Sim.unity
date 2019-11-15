@@ -1188,6 +1188,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveRandomly: 0
   timeBetweenHops: 1.5
+  showRaycast: 0
   simulationManager: {fileID: 2069492826}
 --- !u!50 &688578657
 Rigidbody2D:
@@ -3675,7 +3676,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2069492826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3688,12 +3689,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be77c1cdb64d2fd489e399faf70688ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frogMoves: 0
-  lilypadWaitTime: 0
+  frogMovesValue: 0
   flyActive: 1
-  flyPrefab: {fileID: 4089312944790036105, guid: 5095f2b383e6e3a479975e27c99a868e,
-    type: 3}
-  isSim: 1
+  flyPrefab: {fileID: 0}
   fly: {fileID: 0}
   simInterface: {fileID: 705174917}
 --- !u!4 &2069492827

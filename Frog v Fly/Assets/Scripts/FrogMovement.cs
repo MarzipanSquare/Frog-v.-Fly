@@ -71,12 +71,6 @@ public class FrogMovement : MonoBehaviour
             Move(moveRandomly ? RandomDirection() : flyDir);
         }
 
-        if (showRaycast)
-        {
-            Vector2 forward = transform.TransformDirection(Vector2.up) * 3;
-            Debug.DrawRay(transform.position, forward, Color.white);
-        }
-        
     }
 
     void Move(Direction dir)
@@ -102,7 +96,7 @@ public class FrogMovement : MonoBehaviour
         // generate a raycast of length 3 that looks down the frog's nose
         Vector3 forward = transform.TransformDirection(Vector2.up) * 3;
         RaycastHit2D hit = Physics2D.Raycast(transform.position, forward);
-//        Debug.DrawRay(transform.position, forward, Color.white); //uncomment this to see the raycast in the scene
+        Debug.DrawRay(transform.position, forward, Color.white); //uncomment this to see the raycast in the scene
 
         
         // if the raycast hits a lilypad collider, move the frog to that lilypad
@@ -179,10 +173,12 @@ public class FrogMovement : MonoBehaviour
     // if the fly enters the frog's collider, catch the fly
     private void OnTriggerEnter2D(Collider2D col)
     {
+        // check if object colliding is the fly
         if (col.gameObject.CompareTag("Fly"))
         {
             // destroy the fly object
             Destroy(col.gameObject);
+            // tell the sim manager that there's no fly currently active
             simulationManager.flyActive = false;
         }
     }
