@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.U2D;
+using UnityEngine.UI;
 
 public class Lilypad : MonoBehaviour
 {
@@ -10,17 +12,28 @@ public class Lilypad : MonoBehaviour
 
     [SerializeField]
     private SimulationManager manager;
-
-    IEnumerator waitThreeSeconds()
-    {
-        yield return new WaitForSeconds(manager.lilypadWaitTime);
-    }
+    
+    private float _timer;
+    // how long lilypads stay underwater
+    public int lilypadWaitTime = 2;
+    
+    private IEnumerator coroutine;
 
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.CompareTag("Frog"))
         {
             gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+
+            if (!GetComponent<SpriteRenderer>().enabled)
+            {
+
+                GameObject frog = col.gameObject;
+                manager.TakeFrogLife();
+                
+                // code to flash frog and place it back at start
+                frog.transform.position = new Vector3(-4f, 2f, 0);
+            }
         }
     }
 
@@ -29,9 +42,18 @@ public class Lilypad : MonoBehaviour
         if (col.gameObject.CompareTag("Frog"))
         {
             gameObject.layer = LayerMask.NameToLayer("Default");
-//            this.gameObject.SetActive(false);
-////            StartCoroutine(waitThreeSeconds());
-//            this.gameObject.SetActive(true);
+            GetComponent<SpriteRenderer>().enabled = false;
+            StartCoroutine(WaitAndFloatUp(lilypadWaitTime));
         }
     }
+
+    private IEnumerator WaitAndFloatUp(float waitTime)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(waitTime);
+            GetComponent<SpriteRenderer>().enabled = true;
+        }
+    }
+
 }

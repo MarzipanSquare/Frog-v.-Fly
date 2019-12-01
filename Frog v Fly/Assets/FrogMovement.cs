@@ -48,7 +48,7 @@ public class FrogMovement : MonoBehaviour
     void Update()
     {
 
-        if (!simulationManager.isSim)
+        if (!simulationManager.isSim && !simulationManager.gameOver)
         {
             #region GameCode
         
@@ -82,7 +82,7 @@ public class FrogMovement : MonoBehaviour
 
             #endregion
         }
-        else
+        else if (simulationManager.isSim)
         {
             #region SimulationCode
 
@@ -241,4 +241,27 @@ public class FrogMovement : MonoBehaviour
             simulationManager.flyActive = false;
         }
     }
+    
+    
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

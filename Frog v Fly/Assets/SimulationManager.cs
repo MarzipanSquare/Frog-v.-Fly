@@ -10,35 +10,65 @@ using Random = UnityEngine.Random;
 
 public class SimulationManager : MonoBehaviour
 {
+    [Header("General")]
+    // flag to switch to sim or game
+    public bool isSim = false;
+    
     // time sim has been running
     private float time = 0;
     public float frogMoves;
-    private float _numOfFliesCaught = 0;
-    private float _frogEfficiencyValue;
-
-    // how long lilypads stay underwater
-    public int lilypadWaitTime = 2;
     
     // is there a fly active on the scene?
     public bool flyActive = true;
-    public GameObject flyPrefab; 
-    
-    // flag to switch to sim or game
-    public bool isSim = false;
+    public GameObject flyPrefab;
 
     // the current fly in the scene
     public GameObject fly;
+    
+    [Header("Simulation")]
+    private float _numOfFliesCaught = 0;
+    private float _frogEfficiencyValue;
+    
+    #region SimulationUserInterfaceObjects
+    public GameObject simInterface;
 
-    #region UserInterfaceObjects
-        public GameObject simInterface;
+    private Button _restartButton;
+    private Text _timer;
+    private Text _frogMoves;
+    private Text _flyDistance;
+    private Text _fliesCaught;
+    private Text _frogEfficiency;
 
-        private Button _restartButton;
-        private Text _timer;
-        private Text _frogMoves;
-        private Text _flyDistance;
-        private Text _fliesCaught;
-        private Text _frogEfficiency;
+    #endregion
 
+    [Header("Game")] 
+    public bool gameOver = false;
+    
+    // values for scoring
+    public int pointsGainedPerFly = 500;
+    public int pointsLostPerMove = 100;
+    
+    // how long lilypads stay underwater
+    public int lilypadWaitTime = 2;
+    
+    [Tooltip("Number of Lives the frog starts with")]
+    public int totalLives = 3;
+    
+    [Tooltip("Number of Lives the frog current has")]
+    private int _livesRemaining = 3;
+
+    #region GameUserInterfaceObjects
+
+    public GameObject gameInterface;
+
+    private Text _score;
+    private GameObject _lifeMeter;
+    private List<Image> _meterFrogs;
+    private GameObject _gameOverScreen;
+
+    private Button _playAgainButton;
+    private Text _finalScoreText;
+    
     #endregion
 
 
@@ -47,30 +77,60 @@ public class SimulationManager : MonoBehaviour
         // get a random position on screen and create a fly there
         Vector3 position = new Vector3(Random.Range(-9, 9), Random.Range(-5, 5), 0);
         fly = (GameObject) Instantiate(flyPrefab, position, Quaternion.identity);
+
+
+        if (isSim)
+        {
+
+            simInterface.SetActive(true);
+            gameInterface.SetActive(false);
+            
+            #region GetSimInterfaceObjects
         
+            GameObject infoPanel = simInterface.transform.GetChild(0).gameObject;
 
-        #region GetUserInterfaceObjects
-        
-        GameObject infoPanel = simInterface.transform.GetChild(0).gameObject;
+            _restartButton = simInterface.transform.GetChild(1).gameObject.GetComponent<Button>();
 
-        _restartButton = simInterface.transform.GetChild(1).gameObject.GetComponent<Button>();
+            _restartButton.onClick.AddListener(RestartGame);
 
-        _restartButton.onClick.AddListener(RestartGame);
+            _timer = infoPanel.transform.GetChild(0).gameObject.GetComponent<Text>();
+            _frogMoves = infoPanel.transform.GetChild(1).gameObject.GetComponent<Text>();
+            _flyDistance = infoPanel.transform.GetChild(2).gameObject.GetComponent<Text>();
+            _fliesCaught = infoPanel.transform.GetChild(3).gameObject.GetComponent<Text>();
+            _frogEfficiency = infoPanel.transform.GetChild(4).gameObject.GetComponent<Text>();
 
-        _timer = infoPanel.transform.GetChild(0).gameObject.GetComponent<Text>();
-        _frogMoves = infoPanel.transform.GetChild(1).gameObject.GetComponent<Text>();
-        _flyDistance = infoPanel.transform.GetChild(2).gameObject.GetComponent<Text>();
-        _fliesCaught = infoPanel.transform.GetChild(3).gameObject.GetComponent<Text>();
-        _frogEfficiency = infoPanel.transform.GetChild(4).gameObject.GetComponent<Text>();
+            #endregion
+            
+            _timer.text = "Time: 0 s";
+            _frogMoves.text = "Moves: 0";
+            _flyDistance.text = "Fly Distance: 0";
+            _fliesCaught.text = "Flies Caught: 0";
+            _frogEfficiency.text = "Efficiency: 0 flies\\move";
+            
+        }
+        else
+        {
+            gameInterface.SetActive(true);
+            simInterface.SetActive(false);
 
-        #endregion
-        
-        _timer.text = "Time: 0 s";
-        _frogMoves.text = "Moves: 0";
-        _flyDistance.text = "Fly Distance: 0";
-        _fliesCaught.text = "Flies Caught: 0";
-        _frogEfficiency.text = "Efficiency: 0 flies\\move";
-        
+            #region GetGameInterfaceObjects
+
+            _lifeMeter = gameInterface.transform.Find("LifeMeter").gameObject;
+            _score = gameInterface.transform.Find("Score").gameObject.GetComponent<Text>();
+            _gameOverScreen = gameInterface.transform.Find("GameOverScreen").gameObject;
+            _playAgainButton = _gameOverScreen.transform.Find("PlayAgainButton").gameObject.GetComponent<Button>();
+            _finalScoreText = _gameOverScreen.transform.Find("Score").gameObject.GetComponent<Text>();
+
+            _meterFrogs = new List<Image>(_lifeMeter.GetComponentsInChildren<Image>());
+            
+            _playAgainButton.onClick.AddListener(RestartGame);
+
+            #endregion
+
+            _gameOverScreen.SetActive(false);
+
+        }
+
     }
 
     // Update is called once per frame
@@ -80,24 +140,36 @@ public class SimulationManager : MonoBehaviour
         if (flyActive == false)
         {
             _numOfFliesCaught += 1;
-            _fliesCaught.text = "Flies Caught: " + _numOfFliesCaught;
+            
+            if (isSim)
+            {
+                _fliesCaught.text = "Flies Caught: " + _numOfFliesCaught;
+            }
+
             // get a random position on screen and create a fly there
             Vector3 position = new Vector3(Random.Range(-9, 9), Random.Range(-5, 5), 0);
             fly = (GameObject) Instantiate(flyPrefab, position, Quaternion.identity);
             flyActive = true;
         }
-        else
+        else if (flyActive == false && isSim)
         {
             _frogEfficiencyValue = _numOfFliesCaught / frogMoves;
             _frogEfficiency.text = "Efficiency: " + _frogEfficiencyValue;
         }
 
-        UpdateTimerUI();
-        _frogMoves.text = "Moves: " + frogMoves;
+        if (isSim)
+        {
+            UpdateTimerUI();
+            _frogMoves.text = "Moves: " + frogMoves;
+        }
+        else
+        {
+            UpdateScore();
+        }
 
     }
     
-    void UpdateTimerUI(){
+    private void UpdateTimerUI(){
         //set timer UI
         time += Time.deltaTime;
         _timer.text = "Time: " + time + "s";
@@ -111,5 +183,41 @@ public class SimulationManager : MonoBehaviour
     private void RestartGame()
     {
         SceneManager.LoadScene(1);
+    }
+
+    public void RemoveLife()
+    {
+        
+    }
+
+    private void UpdateScore()
+    {
+        int score = 0;
+
+        score = Mathf.RoundToInt((_numOfFliesCaught * pointsGainedPerFly) - (frogMoves * pointsLostPerMove));
+
+        _score.text = "Score: " + score;
+
+    }
+
+    public void TakeFrogLife()
+    {
+        if (_meterFrogs.Count > 0)
+        {
+            _livesRemaining -= 1;
+            Destroy(_meterFrogs[0]);
+            _meterFrogs.RemoveAt(0);
+        }
+        else
+        {
+            GameOver();
+        }
+    }
+
+    private void GameOver()
+    {
+        gameOver = true;
+        _gameOverScreen.SetActive(true);
+        _finalScoreText.text = _score.text;
     }
 }
