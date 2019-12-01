@@ -47,15 +47,15 @@ public class SimulationManager : MonoBehaviour
     // values for scoring
     public int pointsGainedPerFly = 500;
     public int pointsLostPerMove = 100;
-    
-    // how long lilypads stay underwater
-    public int lilypadWaitTime = 2;
-    
+
     [Tooltip("Number of Lives the frog starts with")]
     public int totalLives = 3;
     
     [Tooltip("Number of Lives the frog current has")]
     private int _livesRemaining = 3;
+
+    [Tooltip("Life Meter Icon")] 
+    public GameObject lifeMeterIconPrefab;
 
     #region GameUserInterfaceObjects
 
@@ -121,6 +121,12 @@ public class SimulationManager : MonoBehaviour
             _playAgainButton = _gameOverScreen.transform.Find("PlayAgainButton").gameObject.GetComponent<Button>();
             _finalScoreText = _gameOverScreen.transform.Find("Score").gameObject.GetComponent<Text>();
 
+            for (int i = 0; i < totalLives; i++)
+            {
+                GameObject frogIndicator = Instantiate(lifeMeterIconPrefab, new Vector3(0,0,0), Quaternion.identity);
+                frogIndicator.transform.parent = _lifeMeter.transform;
+            }
+            
             _meterFrogs = new List<Image>(_lifeMeter.GetComponentsInChildren<Image>());
             
             _playAgainButton.onClick.AddListener(RestartGame);
@@ -128,7 +134,6 @@ public class SimulationManager : MonoBehaviour
             #endregion
 
             _gameOverScreen.SetActive(false);
-
         }
 
     }
