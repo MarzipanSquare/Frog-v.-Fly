@@ -4377,7 +4377,7 @@ MonoBehaviour:
   gameOver: 0
   pointsGainedPerFly: 500
   pointsLostPerMove: 100
-  totalLives: 10
+  totalLives: 3
   lifeMeterIconPrefab: {fileID: 5795709778577723036, guid: 1c5eb7388822a4b42a1e4465bdad1bd7,
     type: 3}
   gameInterface: {fileID: 669261167}
