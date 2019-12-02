@@ -48,6 +48,9 @@ public class SimulationManager : MonoBehaviour
     public int pointsGainedPerFly = 500;
     public int pointsLostPerMove = 100;
 
+    [Tooltip("How long before a lilypad resurfaces in seconds")]
+    public float lilypadWaitTime = 2;
+    
     [Tooltip("Number of Lives the frog starts with")]
     public int totalLives = 3;
     
@@ -118,6 +121,7 @@ public class SimulationManager : MonoBehaviour
             _lifeMeter = gameInterface.transform.Find("LifeMeter").gameObject;
             _score = gameInterface.transform.Find("Score").gameObject.GetComponent<Text>();
             _gameOverScreen = gameInterface.transform.Find("GameOverScreen").gameObject;
+            
             _playAgainButton = _gameOverScreen.transform.Find("PlayAgainButton").gameObject.GetComponent<Button>();
             _finalScoreText = _gameOverScreen.transform.Find("Score").gameObject.GetComponent<Text>();
 

@@ -50,37 +50,7 @@ public class FrogMovement : MonoBehaviour
 
         if (!simulationManager.isSim && !simulationManager.gameOver)
         {
-            #region GameCode
-        
-            // every frame check for a key down and move the frog in that direction
-            if (Input.GetKeyDown(KeyCode.UpArrow) || 
-                Input.GetKeyDown(KeyCode.W))
-            {
-                Move(Direction.Up);
-            
-            }
-        
-            if (Input.GetKeyDown(KeyCode.DownArrow) || 
-                Input.GetKeyDown(KeyCode.S))
-            {
-                Move(Direction.Down);
-            
-            }
-        
-            if (Input.GetKeyDown(KeyCode.LeftArrow) || 
-                Input.GetKeyDown(KeyCode.A))
-            {
-                Move(Direction.Left);
-            
-            }
-        
-            if (Input.GetKeyDown(KeyCode.RightArrow) || 
-                Input.GetKeyDown(KeyCode.D))
-            {
-                Move(Direction.Right);
-            }
-
-            #endregion
+            // CI101 INSERT CODE HERE
         }
         else if (simulationManager.isSim)
         {
